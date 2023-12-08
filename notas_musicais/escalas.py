@@ -9,6 +9,10 @@ def escala(tonica: str, tonalidade: str) -> dict[str, list[str]]:
     Args:
         tonica: Nota que será a tônica da escala
         tonalidade: Tonalidade da escala
+
+    Raises:
+        ValueError: Caso a tônica não seja uma nota valida.
+        KeyError: Caso a escala não existe ou não tenha sido implementada.
         
     Returns: 
        Uma dicionário com as notas da escala e os graus.
@@ -16,14 +20,23 @@ def escala(tonica: str, tonalidade: str) -> dict[str, list[str]]:
     Examples:
         >>> escala('C', 'maior')
         {'notas': ['C', 'D', 'E', 'F', 'G', 'A', 'B'], 'graus': ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII']}
+        
         >>> escala('a', 'maior')
         {'notas': ['A', 'B', 'C#', 'D', 'E', 'F#', 'G#'], 'graus': ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII']}
 
     """
 
     tonica = tonica.upper()
-    intervalos = ESCALAS[tonalidade]
-    tonica_pos = NOTAS.index(tonica)
+
+    try: 
+        intervalos = ESCALAS[tonalidade]
+        tonica_pos = NOTAS.index(tonica)
+    except ValueError:
+        raise ValueError(f'Essa nota não existe, tente uma dessas {NOTAS}')
+    except KeyError:
+        raise KeyError(
+            f'Essa escala não existe ou não foi implementada, tente uma dessas {list(ESCALAS.keys())}'
+        )
 
     temp = []
 
